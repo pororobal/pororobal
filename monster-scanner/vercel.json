@@ -1,4 +1,7 @@
 {
+  "buildCommand": "",
+  "outputDirectory": ".",
+  "cleanUrls": true,
   "functions": {
     "api/scanner.js": {
       "runtime": "nodejs",
