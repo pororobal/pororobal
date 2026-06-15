@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/scanner.js": {
+      "runtime": "nodejs",
+      "maxDuration": 30
+    }
+  }
+}
