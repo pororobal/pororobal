@@ -1,13 +1,7 @@
 {
-  "version": 2,
-  "buildCommand": "",
-  "outputDirectory": "",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/$1" }
-  ],
   "functions": {
     "api/scanner.js": {
-      "runtime": "nodejs",
+      "runtime": "nodejs20.x",
       "maxDuration": 30
     }
   }
