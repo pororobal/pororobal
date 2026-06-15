@@ -1,39 +1,34 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>🦖 몬스터 스캐너</title>
-  <style>
-    body { font-family: sans-serif; margin:0; background:#f5f6fa; color:#191f28; }
-    .container { padding:16px; }
-    .stock-card { background:#fff; border-radius:16px; padding:16px; margin-bottom:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
-    .ticker { font-size:18px; font-weight:800; }
-    .score { font-size:14px; font-weight:700; color:#f97316; }
-    button { background:#3182f6; color:#fff; border:none; border-radius:12px; padding:12px 24px; font-size:16px; margin:16px 0; }
-  </style>
+    <title>Monster Stock Scanner</title>
+    <meta charset="UTF-8">
+    <style>
+        body { background: #0a0a0a; color: #0f0; font-family: monospace; padding: 20px; }
+        pre { background: #111; padding: 15px; overflow-x: auto; border-radius: 8px; }
+        .status { margin-bottom: 15px; }
+        .error { color: #f66; }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>🦖 몬스터 스캐너</h1>
-  <button onclick="fetchData()">실시간 스캔 시작</button>
-  <div id="output"></div>
-</div>
-<script>
-async function fetchData() {
-  const res = await fetch('/api/scanner');
-  const data = await res.json();
-  const stocks = data.stocks || [];
-  document.getElementById('output').innerHTML = stocks.map(s => `
-    <div class="stock-card">
-      <span class="ticker">${s.symbol}</span> ${s.companyName}<br>
-      가격: $${s.price} (${s.changePercent>0?'+':''}${s.changePercent}%)<br>
-      <span class="score">Monster Score: ${s.total}점 (${s.grade})</span>
-      ${s.buy ? '✅ 매수 신호' : ''}
-    </div>
-  `).join('');
-}
-fetchData();
-</script>
+    <h1>🐉 Monster Stock Scanner</h1>
+    <div class="status" id="status">Loading data from scanner...</div>
+    <pre id="output"></pre>
+    <script>
+        fetch('/api/scanner')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('status').innerHTML = `✅ ${data.count} stocks found | Top ${data.stocks?.length || 0} shown | Updated: ${new Date(data.timestamp).toLocaleTimeString()}`;
+                    document.getElementById('output').innerHTML = JSON.stringify(data.stocks, null, 2);
+                } else {
+                    throw new Error(data.error || 'Unknown error');
+                }
+            })
+            .catch(err => {
+                document.getElementById('status').innerHTML = `<span class="error">❌ Error: ${err.message}</span>`;
+                document.getElementById('output').innerHTML = '';
+            });
+    </script>
 </body>
 </html>
