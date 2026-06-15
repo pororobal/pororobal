@@ -1,7 +1,10 @@
 {
+  "version": 2,
   "buildCommand": "",
-  "outputDirectory": ".",
-  "cleanUrls": true,
+  "outputDirectory": "",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1" }
+  ],
   "functions": {
     "api/scanner.js": {
       "runtime": "nodejs",
